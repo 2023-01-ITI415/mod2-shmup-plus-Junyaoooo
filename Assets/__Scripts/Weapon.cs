@@ -31,9 +31,9 @@ public class WeaponDefinition
     public Color color = Color.white; // Color of Collar & power-up
     public GameObject weaponModelPrefab; // Prefab for projectiles
     public Color projectileColor = Color.white;
-    public float damageOnHit = 0; // Amount of damage caused
+    public float damageOnHit = 10; // Amount of damage caused
     public float continuousDamage = 0; // Damage per second (Laser)
-    public float delayBetweenShots = 0;
+    public float delayBetweenShots = 0.5f;
     public float velocity = 20; // Speed of projectiles
 }
 public class Weapon : MonoBehaviour
@@ -126,23 +126,47 @@ public class Weapon : MonoBehaviour
 
         ProjectileHero p;
         Vector3 vel = Vector3.up * def.velocity;
-
+       
         switch (type)
         {
             case eWeaponType.blaster:
                 p = MakeProjectile();
                 p.vel = vel;
+                def.delayBetweenShots = 0.1f;
+                def.damageOnHit = 3f;
                 break;
+
+
 
             case eWeaponType.spread:
                 p = MakeProjectile(); // Make middle Projectile
-                p.vel = vel; ;
+                p.vel = vel; 
+
                 p = MakeProjectile(); // Make right Projectile
                 p.transform.rotation = Quaternion.AngleAxis(10, Vector3.back);
                 p.vel = p.transform.rotation * vel;
+
+                p = MakeProjectile(); // Make right Projectile
+                p.transform.rotation = Quaternion.AngleAxis(15, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+
+
                 p = MakeProjectile(); // Make left Projectile
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.vel = p.transform.rotation * vel;
+
+                p = MakeProjectile(); // Make right Projectile
+                p.transform.rotation = Quaternion.AngleAxis(-15, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+
+                def.delayBetweenShots = 1.2f;
+                break;
+
+
+            case eWeaponType.laser:
+                p = MakeProjectile();
+                p.vel = vel;
+
                 break;
         }
     }
